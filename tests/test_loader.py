@@ -86,9 +86,11 @@ def test_csv_with_unterminated_quote_raises(write):
         load_csv(write("unterminated.csv", 'name,age\nAda,"36\n'))
 
 
-def test_csv_with_valid_multiline_field(write):
+def test_csv_with_valid_multiline_field(tmp_path):
     content = 'name,bio\nAda,"First computer\nprogrammer"\n'
-    rows = load_csv(write("multiline.csv", content))
+    path = tmp_path / "multiline.csv"
+    path.write_bytes(content.encode("utf-8"))
+    rows = load_csv(path)
     assert rows == [{"name": "Ada", "bio": "First computer\nprogrammer"}]
 
 
